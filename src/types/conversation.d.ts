@@ -8,14 +8,26 @@ export interface Message {
   retryCallback?: () => Promise<void>; // 🔹 Permite reintentar si el mensaje es de error
 }
 
-export interface ConversationResponse {
+interface MockConversationBase {
   id: number;
   title: string;
   user_id: number;
   created_at: string;
   updated_at: string;
   last_message: string | null;
+}
+
+export interface ConversationResponse extends MockConversationBase {
   message_count: number;
+}
+
+interface UpdateConversationInput {
+  title?: string;
+  last_message?: string;
+}
+
+interface UpdateConversationResponse {
+  conversation: ConversationResponse;
 }
 
 export interface GetConversationsResponse {
@@ -40,4 +52,11 @@ interface ConversationState {
   error: string | null;
 
   fetchConversations: (token: string) => Promise<void>;
+  createConversation: (
+    token: string,
+    title?: string
+  ) => Promise<ConversationResponse | null>;
+  // updateConversationInStore: (updatedConv: ConversationResponse) => void;
+  updateConversationInStore: (updatedConv: Partial<ConversationResponse>) => void;
+
 }

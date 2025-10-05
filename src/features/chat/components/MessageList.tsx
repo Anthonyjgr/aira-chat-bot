@@ -47,7 +47,7 @@ const MessageList = ({ messages, isTyping }: MessageListProps) => {
 
   const iaThinkingDefaultMessage = {
     id: 123,
-    conversation_id: messages[0].conversation_id,
+    conversation_id: messages[0]?.conversation_id ?? 0,
     content: "Thinking...",
     is_from_ai: true,
     created_at: "",
@@ -60,7 +60,7 @@ const MessageList = ({ messages, isTyping }: MessageListProps) => {
     >
       {messages.length === 0 ? (
         <p className="text-gray-400 text-center mt-10">
-          No messages yet. Start the conversation!
+          Hello, I'm Aira your AI assintant. What can I help you with?
         </p>
       ) : (
         messages.map((msg) => (

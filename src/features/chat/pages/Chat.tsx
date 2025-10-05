@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { mockApi } from "@/lib/mockApi/mock_API";
+import { mockApi, mockHelpers } from "@/lib/mockApi/mock_API";
 import type { Message } from "@/types/conversation";
 import { useAuthStore } from "@/features/auth/store/auth.store";
 import MessageList from "../components/MessageList";
 import MessageInput from "../components/MessageInput";
+import { useConversationStore } from "@/features/conversations/store/conversation.store";
 
 const Chat = () => {
   const { conversationId } = useParams();
-  const { tokens } = useAuthStore();
+  const { tokens, user } = useAuthStore();
+  const { updateConversationInStore } = useConversationStore();
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(true);
   const [isTyping, setisTyping] = useState(false);
@@ -51,38 +53,110 @@ const Chat = () => {
   const handleSendMessage = async (content: string) => {
     if (!conversationId || !tokens) return;
 
+    const convId = Number(conversationId);
+    const isFirstMessage = messages.length === 0;
+
+    const title = isFirstMessage
+      ? mockHelpers.generateTitle(content)
+      : messages[0]?.conversation_id.toString() ?? "Untitled";
+
+    // 🚀 Optimistic update (antes del request real)
+    updateConversationInStore({
+      id: convId,
+      // title,
+      user_id: 1,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      last_message: content,
+      message_count: messages.length + 1,
+    });
+
     try {
-      // Mensaje del usuario
+      // 1️⃣ Enviar mensaje del usuario
       const { message: userMsg } = await mockApi.sendMessage(
         tokens.token,
-        Number(conversationId),
+        convId,
         content
       );
       setMessages((prev) => [...prev, userMsg]);
       setisTyping(true);
 
-      // Simular respuesta IA
-      const { message: aiMsg } = await mockApi.simulateAIResponse(
-        Number(conversationId),
-        content
-      );
+      // 2️⃣ Actualizar conversación en API (solo título si es primera vez)
+      const updatePayload = isFirstMessage
+        ? { title, last_message: content }
+        : { last_message: content };
+
+      try {
+        const { conversation: updatedConv } = await mockApi.updateConversation(
+          tokens.token,
+          convId,
+          updatePayload
+        );
+
+        // ✅ Si era el primer mensaje, actualizamos el store con el título generado
+        if (isFirstMessage && updatedConv.title) {
+          updateConversationInStore(updatedConv);
+        } else {
+          // ✅ Si no, solo actualizamos el last_message
+          updateConversationInStore({
+            id: convId,
+            last_message: updatedConv.last_message,
+            updated_at: updatedConv.updated_at,
+          });
+        }
+      } catch (updateErr) {
+        console.warn("⚠️ Optimistic update failed:", updateErr);
+      }
+
+      // 3️⃣ Simular respuesta IA
+      const { message: aiMsg } = await mockApi.simulateAIResponse(convId, content);
       setMessages((prev) => [...prev, aiMsg]);
+      setisTyping(false);
+
+      // 4️⃣ Actualización optimista inmediata del último mensaje (IA)
+      updateConversationInStore({
+        id: convId,
+        user_id: user?.id ?? 0,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        last_message: aiMsg.content,
+        message_count: messages.length + 2,
+      });
+
+      // 5️⃣ Actualización real del last_message (confirmación final)
+      try {
+        await mockApi.updateConversation(tokens.token, convId, {
+          last_message: aiMsg.content,
+        });
+      } catch (updateErr) {
+        console.warn("⚠️ Update failed after AI:", updateErr);
+      }
     } catch (err) {
       console.error("Error sending message:", err);
-
-      // 🧩 detenemos la animación si la IA falla
       setisTyping(false);
 
       if (err instanceof Error && err.message === "AI service temporarily unavailable") {
         const retryFn = async () => {
           setisTyping(true);
           try {
-            const { message: aiMsg } = await mockApi.simulateAIResponse(
-              Number(conversationId),
-              content
-            );
-            setMessages((prev) => prev.filter((m) => !m.isError)); // limpiar mensaje de error
+            const { message: aiMsg } = await mockApi.simulateAIResponse(convId, content);
+            setMessages((prev) => prev.filter((m) => !m.isError));
             setMessages((prev) => [...prev, aiMsg]);
+
+            // actualizar last_message optimistamente en retry
+            updateConversationInStore({
+              id: convId,
+              title,
+              user_id: user?.id ?? 0,
+              created_at: new Date().toISOString(),
+              updated_at: new Date().toISOString(),
+              last_message: aiMsg.content,
+              message_count: messages.length + 2,
+            });
+
+            await mockApi.updateConversation(tokens.token, convId, {
+              last_message: aiMsg.content,
+            });
           } catch (retryErr) {
             console.error("Retry failed:", retryErr);
           } finally {
@@ -92,7 +166,7 @@ const Chat = () => {
 
         const errorMsg: Message = {
           id: Date.now(),
-          conversation_id: Number(conversationId),
+          conversation_id: convId,
           content: "AI service temporarily unavailable. Please try again.",
           is_from_ai: true,
           created_at: new Date().toISOString(),
@@ -107,7 +181,16 @@ const Chat = () => {
     }
   };
 
-  if (loading) return <p className="p-4 text-gray-400">Loading messages…</p>;
+  if (loading) {
+    return (
+      <div className="flex flex-col h-full w-full justify-between">
+        <div className="flex items-center justify-center h-full">
+          <p className="p-4 text-gray-400 text-center">Loading messages…</p>
+        </div>
+        <MessageInput onMessageSent={handleSendMessage} isTyping={isTyping} />
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col h-full w-full justify-between">

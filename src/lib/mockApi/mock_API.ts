@@ -11,7 +11,10 @@ import type {
   CreateConversationResponse,
   GetConversationsResponse,
   GetMessagesResponse,
+  MockConversationBase,
   SendMessageResponse,
+  UpdateConversationInput,
+  UpdateConversationResponse,
 } from "@/types/conversation";
 import type { Message } from "@/types/conversation";
 
@@ -41,7 +44,7 @@ const MOCK_USERS = [
   },
 ];
 
-const MOCK_CONVERSATIONS = [
+const MOCK_CONVERSATIONS:  MockConversationBase[] = [
   {
     id: 1,
     title: "Getting Started with AI",
@@ -146,6 +149,7 @@ const delay = (ms = 800) => new Promise((resolve) => setTimeout(resolve, ms));
 
 // Simulate random failures (10% chance)
 const shouldFail = () => Math.random() < 0.1;
+// const shouldFail = () => Math.random() < 0.5;
 
 export const mockApi = {
   // ==========================================
@@ -172,7 +176,11 @@ export const mockApi = {
     };
   },
 
-  async register(email: string, password: string, name: string): Promise<RegisterUserResponse> {
+  async register(
+    email: string,
+    password: string,
+    name: string
+  ): Promise<RegisterUserResponse> {
     await delay(1200);
 
     if (shouldFail()) {
@@ -254,6 +262,8 @@ export const mockApi = {
       message_count: 0,
     };
 
+      // ✅ Guardamos también en el mock global
+    MOCK_CONVERSATIONS.push(newConversation);
     return { conversation: newConversation };
   },
 
@@ -401,11 +411,47 @@ export const mockApi = {
     return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
   },
 
+  async updateConversation(
+    token: string,
+    conversationId: number,
+    updates: UpdateConversationInput
+  ): Promise<UpdateConversationResponse> {
+    await delay(600);
+    console.log(updates)
+    // Token Validation
+    if (!token) {
+      throw new Error("Unauthorized");
+    }
+
+    const conversation = MOCK_CONVERSATIONS.find((c) => c.id === conversationId);
+    if (!conversation) {
+      throw new Error("Conversation not found");
+    }
+
+    // Update only properties that came from updates parameters
+    const updatedConversation = {
+      ...conversation,
+      title: updates.title ?? conversation.title,
+      last_message: updates.last_message ?? conversation.last_message,
+      updated_at: new Date().toISOString(),
+      message_count: MOCK_MESSAGES[conversationId]?.length || 0,
+    };
+
+    // Persist changes in local MOCK_CONVERSATIONS 
+    const index = MOCK_CONVERSATIONS.findIndex((c) => c.id === conversationId);
+    MOCK_CONVERSATIONS[index] = updatedConversation;
+
+    return { conversation: updatedConversation };
+  },
+
   // ==========================================
   // USER PROFILE
   // ==========================================
 
-  async updateProfile(token: string, updates: UpdateProfileInput): Promise<UpdateProfileResponse> {
+  async updateProfile(
+    token: string,
+    updates: UpdateProfileInput
+  ): Promise<UpdateProfileResponse> {
     await delay(1000);
 
     if (!token) {
