@@ -148,8 +148,8 @@ const MOCK_MESSAGES: Record<number, Message[]> = {
 const delay = (ms = 800) => new Promise((resolve) => setTimeout(resolve, ms));
 
 // Simulate random failures (10% chance)
-const shouldFail = () => Math.random() < 0.1;
-// const shouldFail = () => Math.random() < 0.5;
+// const shouldFail = () => Math.random() < 0.1;
+const shouldFail = () => Math.random() < 0.7;
 
 export const mockApi = {
   // ==========================================
