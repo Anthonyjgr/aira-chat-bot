@@ -1,4 +1,4 @@
-import MessageItem from "./MessageItem";
+import ChatMessage from "./ChatMessage";
 import type { Message } from "@/types/conversation";
 import { useEffect, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
@@ -84,7 +84,7 @@ const MessageList = ({
         </p>
       ) : (
         messages.map((msg) => (
-          <MessageItem
+          <ChatMessage
             key={msg.id}
             message={msg}
             isUser={!msg.is_from_ai && msg.conversation_id === msg.conversation_id}
@@ -94,7 +94,7 @@ const MessageList = ({
       )}
       {isTyping && (
         <div className="animate-thinking">
-          <MessageItem
+          <ChatMessage
             key="random-id"
             message={iaThinkingDefaultMessage}
             isUser={false}

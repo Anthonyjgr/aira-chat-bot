@@ -2,13 +2,13 @@ import { RotateCcw } from "lucide-react";
 import type { Message } from "@/types/conversation";
 import { useEffect, useState } from "react";
 
-interface MessageItemProps {
+interface ChatMessageProps {
   message: Message;
   isUser: boolean;
   onRetry?: (message: Message) => void;
 }
 
-const MessageItem = ({ message, isUser, onRetry }: MessageItemProps) => {
+const ChatMessage = ({ message, isUser, onRetry }: ChatMessageProps) => {
   const [isError, setIsError] = useState<boolean>(false);
   // console.log(message);
 
@@ -32,16 +32,6 @@ const MessageItem = ({ message, isUser, onRetry }: MessageItemProps) => {
       >
         <p>{message.content}</p>
 
-        {/* {isError && message.retryCallback  && (
-          <div>
-            <button
-              className="mt-2 flex items-center gap-1 text-sm text-red-700 hover:text-black cursor-pointer"
-              onClick={message.retryCallback}
-            >
-              <RotateCcw size={14} /> Retry
-            </button>
-          </div>
-        )} */}
         {isError && onRetry && (
           <button
             className="mt-2 flex items-center gap-1 text-sm text-red-700 hover:text-black cursor-pointer"
@@ -55,4 +45,4 @@ const MessageItem = ({ message, isUser, onRetry }: MessageItemProps) => {
   );
 };
 
-export default MessageItem;
+export default ChatMessage;
