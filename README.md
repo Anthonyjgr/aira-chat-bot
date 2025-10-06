@@ -188,5 +188,3 @@ Full Stack Developer | Product-Oriented Engineer |
 <p align="center">Made with ❤️, architecture, and attention to detail.</p>
 
 ---
-
-Would you like me to include a **header banner image** (with your Aira avatar + brand color background) at the top of the README for GitHub display? It would make the repo presentation look more like a polished product page.
