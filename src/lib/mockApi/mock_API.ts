@@ -226,6 +226,7 @@ export const mockApi = {
   async getConversations(token: string): Promise<GetConversationsResponse> {
     await delay(600);
 
+
     if (!token) {
       throw new Error("Unauthorized");
     }

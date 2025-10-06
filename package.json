@@ -15,9 +15,11 @@
     "@tailwindcss/vite": "^4.1.14",
     "lucide-react": "^0.544.0",
     "motion": "^12.23.22",
+    "nanoid": "^5.1.6",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-router-dom": "^7.9.3",
+    "react-toastify": "^11.0.5",
     "tailwindcss": "^4.1.14",
     "zustand": "^5.0.8"
   },

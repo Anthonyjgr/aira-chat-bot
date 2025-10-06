@@ -5,8 +5,7 @@ export interface Message {
   is_from_ai: boolean;
   created_at: string;
   isPending?: boolean;
-  isError?: boolean; // 🔹 Nuevo flag opcional para errores IA
-  retryCallback?: () => Promise<void>; // 🔹 Permite reintentar si el mensaje es de error
+  isError?: boolean; 
 }
 
 interface MockConversationBase {

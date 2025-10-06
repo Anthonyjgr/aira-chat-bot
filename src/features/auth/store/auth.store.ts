@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { AuthState } from "../../../types/auth";
 import { mockApi } from "@/lib/mockApi/mock_API";
+import { toast } from "react-toastify";
 
 export const useAuthStore = create<AuthState>()(
   persist(
@@ -20,6 +21,9 @@ export const useAuthStore = create<AuthState>()(
         } catch (err: unknown) {
           const message = err instanceof Error ? err.message : "Login failed";
           set({ error: message });
+          toast.error(message + " please try again", {
+            toastId: message,
+          });
           throw err;
         } finally {
           set({ isLoading: false });
@@ -39,6 +43,9 @@ export const useAuthStore = create<AuthState>()(
         } catch (err: unknown) {
           const message = err instanceof Error ? err.message : "Register failed";
           set({ error: message });
+          toast.error(message + " please try again", {
+            toastId: message,
+          });
           throw err;
         } finally {
           set({ isLoading: false });

@@ -1,13 +1,20 @@
 import { RotateCcw } from "lucide-react";
 import type { Message } from "@/types/conversation";
+import { useEffect, useState } from "react";
 
 interface MessageItemProps {
   message: Message;
   isUser: boolean;
+  onRetry?: (message: Message) => void;
 }
 
-const MessageItem = ({ message, isUser }: MessageItemProps) => {
-  const isError = message.isError;
+const MessageItem = ({ message, isUser, onRetry }: MessageItemProps) => {
+  const [isError, setIsError] = useState<boolean>(false);
+  // console.log(message);
+
+  useEffect(() => {
+    setIsError(!!message.isError);
+  }, [message]);
 
   return (
     <div
@@ -25,8 +32,8 @@ const MessageItem = ({ message, isUser }: MessageItemProps) => {
       >
         <p>{message.content}</p>
 
-        {isError && message.retryCallback && (
-          <div >
+        {/* {isError && message.retryCallback  && (
+          <div>
             <button
               className="mt-2 flex items-center gap-1 text-sm text-red-700 hover:text-black cursor-pointer"
               onClick={message.retryCallback}
@@ -34,6 +41,14 @@ const MessageItem = ({ message, isUser }: MessageItemProps) => {
               <RotateCcw size={14} /> Retry
             </button>
           </div>
+        )} */}
+        {isError && onRetry && (
+          <button
+            className="mt-2 flex items-center gap-1 text-sm text-red-700 hover:text-black cursor-pointer"
+            onClick={() => onRetry(message)}
+          >
+            <RotateCcw size={14} /> Retry
+          </button>
         )}
       </div>
     </div>

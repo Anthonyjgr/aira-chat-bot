@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { mockApi } from "@/lib/mockApi/mock_API";
 import type { ConversationState } from "@/types/conversation";
+import { toast } from "react-toastify";
 
 export const useConversationStore = create<ConversationState>()(
   persist(
@@ -10,7 +11,7 @@ export const useConversationStore = create<ConversationState>()(
       isLoading: false,
       error: null,
       searchQuery: "", // 🔹 nuevo estado
-      
+
       fetchConversations: async (token: string) => {
         const current = get().conversations;
         if (current.length > 0) {
@@ -26,6 +27,9 @@ export const useConversationStore = create<ConversationState>()(
           const message =
             err instanceof Error ? err.message : "Failed to load conversations";
           set({ error: message });
+          toast.error(message, {
+            toastId: message,
+          });
         } finally {
           set({ isLoading: false });
         }
@@ -37,7 +41,7 @@ export const useConversationStore = create<ConversationState>()(
         try {
           const res = await mockApi.createConversation(token, title);
           const updated = [...get().conversations, res.conversation];
-          set({ conversations: updated }); // ✅ esto dispara persist automáticamente
+          set({ conversations: updated });
           return res.conversation;
         } catch (err) {
           console.error("Error creating conversation:", err);
@@ -128,148 +132,145 @@ export const useConversationStore = create<ConversationState>()(
 
 // }));
 
+// const handleSendMessage = async (content: string) => {
+//   if (!conversationId || !tokens) return;
 
+//   const convId = Number(conversationId);
+//   const isFirstMessage = messages.length === 0;
 
-  // const handleSendMessage = async (content: string) => {
-  //   if (!conversationId || !tokens) return;
+//   const title = isFirstMessage
+//     ? mockHelpers.generateTitle(content)
+//     : messages[0]?.conversation_id.toString() ?? "Untitled";
 
-  //   const convId = Number(conversationId);
-  //   const isFirstMessage = messages.length === 0;
+//   // 🚀 Optimistic update (antes del request real)
+//   updateConversationInStore({
+//     id: convId,
+//     // title,
+//     user_id: 1,
+//     created_at: new Date().toISOString(),
+//     updated_at: new Date().toISOString(),
+//     last_message: content,
+//     message_count: messages.length + 1,
+//   });
 
-  //   const title = isFirstMessage
-  //     ? mockHelpers.generateTitle(content)
-  //     : messages[0]?.conversation_id.toString() ?? "Untitled";
+//   try {
+//     // 1️⃣ Enviar mensaje del usuario
+//     const { message: userMsg } = await mockApi.sendMessage(
+//       tokens.token,
+//       convId,
+//       content
+//     );
+//     // setMessages((prev) => [...prev, userMsg]);
+//     addMessage(Number(conversationId), userMsg);
+//     setisTyping(true);
 
-  //   // 🚀 Optimistic update (antes del request real)
-  //   updateConversationInStore({
-  //     id: convId,
-  //     // title,
-  //     user_id: 1,
-  //     created_at: new Date().toISOString(),
-  //     updated_at: new Date().toISOString(),
-  //     last_message: content,
-  //     message_count: messages.length + 1,
-  //   });
+//     // 2️⃣ Actualizar conversación en API (solo título si es primera vez)
+//     const updatePayload = isFirstMessage
+//       ? { title, last_message: content }
+//       : { last_message: content };
 
-  //   try {
-  //     // 1️⃣ Enviar mensaje del usuario
-  //     const { message: userMsg } = await mockApi.sendMessage(
-  //       tokens.token,
-  //       convId,
-  //       content
-  //     );
-  //     // setMessages((prev) => [...prev, userMsg]);
-  //     addMessage(Number(conversationId), userMsg);
-  //     setisTyping(true);
+//     try {
+//       const { conversation: updatedConv } = await mockApi.updateConversation(
+//         tokens.token,
+//         convId,
+//         updatePayload
+//       );
 
-  //     // 2️⃣ Actualizar conversación en API (solo título si es primera vez)
-  //     const updatePayload = isFirstMessage
-  //       ? { title, last_message: content }
-  //       : { last_message: content };
+//       // ✅ Si era el primer mensaje, actualizamos el store con el título generado
+//       if (isFirstMessage && updatedConv.title) {
+//         updateConversationInStore(updatedConv);
+//       } else {
+//         // ✅ Si no, solo actualizamos el last_message
+//         updateConversationInStore({
+//           id: convId,
+//           last_message: updatedConv.last_message,
+//           updated_at: updatedConv.updated_at,
+//         });
+//       }
+//     } catch (updateErr) {
+//       console.warn("⚠️ Optimistic update failed:", updateErr);
+//     }
 
-  //     try {
-  //       const { conversation: updatedConv } = await mockApi.updateConversation(
-  //         tokens.token,
-  //         convId,
-  //         updatePayload
-  //       );
+//     // 3️⃣ Simular respuesta IA
+//     const { message: aiMsg } = await mockApi.simulateAIResponse(convId, content);
+//     // setMessages((prev) => [...prev, aiMsg]);
+//     addMessage(Number(conversationId), aiMsg);
+//     setisTyping(false);
 
-  //       // ✅ Si era el primer mensaje, actualizamos el store con el título generado
-  //       if (isFirstMessage && updatedConv.title) {
-  //         updateConversationInStore(updatedConv);
-  //       } else {
-  //         // ✅ Si no, solo actualizamos el last_message
-  //         updateConversationInStore({
-  //           id: convId,
-  //           last_message: updatedConv.last_message,
-  //           updated_at: updatedConv.updated_at,
-  //         });
-  //       }
-  //     } catch (updateErr) {
-  //       console.warn("⚠️ Optimistic update failed:", updateErr);
-  //     }
+//     // 4️⃣ Actualización optimista inmediata del último mensaje (IA)
+//     updateConversationInStore({
+//       id: convId,
+//       user_id: user?.id ?? 0,
+//       created_at: new Date().toISOString(),
+//       updated_at: new Date().toISOString(),
+//       last_message: aiMsg.content,
+//       message_count: messages.length + 2,
+//     });
 
-  //     // 3️⃣ Simular respuesta IA
-  //     const { message: aiMsg } = await mockApi.simulateAIResponse(convId, content);
-  //     // setMessages((prev) => [...prev, aiMsg]);
-  //     addMessage(Number(conversationId), aiMsg);
-  //     setisTyping(false);
+//     // 5️⃣ Actualización real del last_message (confirmación final)
+//     try {
+//       await mockApi.updateConversation(tokens.token, convId, {
+//         last_message: aiMsg.content,
+//       });
+//     } catch (updateErr) {
+//       console.warn("⚠️ Update failed after AI:", updateErr);
+//     }
+//   } catch (err) {
+//     console.error("Error sending message:", err);
+//     setisTyping(false);
 
-  //     // 4️⃣ Actualización optimista inmediata del último mensaje (IA)
-  //     updateConversationInStore({
-  //       id: convId,
-  //       user_id: user?.id ?? 0,
-  //       created_at: new Date().toISOString(),
-  //       updated_at: new Date().toISOString(),
-  //       last_message: aiMsg.content,
-  //       message_count: messages.length + 2,
-  //     });
+//     if (err instanceof Error && err.message === "AI service temporarily unavailable") {
+//       const retryFn = async () => {
+//         setisTyping(true);
+//         try {
+//           const { message: aiMsg } = await mockApi.simulateAIResponse(convId, content);
 
-  //     // 5️⃣ Actualización real del last_message (confirmación final)
-  //     try {
-  //       await mockApi.updateConversation(tokens.token, convId, {
-  //         last_message: aiMsg.content,
-  //       });
-  //     } catch (updateErr) {
-  //       console.warn("⚠️ Update failed after AI:", updateErr);
-  //     }
-  //   } catch (err) {
-  //     console.error("Error sending message:", err);
-  //     setisTyping(false);
+//           // 💡 Limpiar mensajes de error previos antes de agregar el nuevo
+//           const currentMessages = messagesByConversation[convId] || [];
+//           const filtered = currentMessages.filter((m) => !m.isError);
+//           setMessages(convId, filtered);
 
-  //     if (err instanceof Error && err.message === "AI service temporarily unavailable") {
-  //       const retryFn = async () => {
-  //         setisTyping(true);
-  //         try {
-  //           const { message: aiMsg } = await mockApi.simulateAIResponse(convId, content);
+//           // ✅ Agregar el nuevo mensaje AI al store persistente
+//           addMessage(convId, aiMsg);
 
-  //           // 💡 Limpiar mensajes de error previos antes de agregar el nuevo
-  //           const currentMessages = messagesByConversation[convId] || [];
-  //           const filtered = currentMessages.filter((m) => !m.isError);
-  //           setMessages(convId, filtered);
+//           // ✅ Actualizar last_message optimistamente
+//           updateConversationInStore({
+//             id: convId,
+//             title,
+//             user_id: user?.id ?? 0,
+//             created_at: new Date().toISOString(),
+//             updated_at: new Date().toISOString(),
+//             last_message: aiMsg.content,
+//             message_count: filtered.length + 1,
+//           });
 
-  //           // ✅ Agregar el nuevo mensaje AI al store persistente
-  //           addMessage(convId, aiMsg);
+//           // ✅ Guardar en el mock API
+//           await mockApi.updateConversation(tokens.token, convId, {
+//             last_message: aiMsg.content,
+//           });
+//         } catch (retryErr) {
+//           console.error("Retry failed:", retryErr);
+//         } finally {
+//           setisTyping(false);
+//         }
+//       };
 
-  //           // ✅ Actualizar last_message optimistamente
-  //           updateConversationInStore({
-  //             id: convId,
-  //             title,
-  //             user_id: user?.id ?? 0,
-  //             created_at: new Date().toISOString(),
-  //             updated_at: new Date().toISOString(),
-  //             last_message: aiMsg.content,
-  //             message_count: filtered.length + 1,
-  //           });
+//       // 🧩 Crear mensaje de error persistente
+//       const errorMsg: Message = {
+//         id: Date.now(),
+//         conversation_id: convId,
+//         content: "AI service temporarily unavailable. Please try again.",
+//         is_from_ai: true,
+//         created_at: new Date().toISOString(),
+//         isError: true,
+//         retryCallback: retryFn,
+//       };
 
-  //           // ✅ Guardar en el mock API
-  //           await mockApi.updateConversation(tokens.token, convId, {
-  //             last_message: aiMsg.content,
-  //           });
-  //         } catch (retryErr) {
-  //           console.error("Retry failed:", retryErr);
-  //         } finally {
-  //           setisTyping(false);
-  //         }
-  //       };
+//       // ✅ Guardar el mensaje de error en el store persistente
+//       addMessage(convId, errorMsg);
+//     }
 
-  //       // 🧩 Crear mensaje de error persistente
-  //       const errorMsg: Message = {
-  //         id: Date.now(),
-  //         conversation_id: convId,
-  //         content: "AI service temporarily unavailable. Please try again.",
-  //         is_from_ai: true,
-  //         created_at: new Date().toISOString(),
-  //         isError: true,
-  //         retryCallback: retryFn,
-  //       };
-
-  //       // ✅ Guardar el mensaje de error en el store persistente
-  //       addMessage(convId, errorMsg);
-  //     }
-
-
-  //   } finally {
-  //     setisTyping(false);
-  //   }
-  // };
+//   } finally {
+//     setisTyping(false);
+//   }
+// };

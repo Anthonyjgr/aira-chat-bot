@@ -1,16 +1,15 @@
 import MessageItem from "./MessageItem";
 import type { Message } from "@/types/conversation";
-import { useAuthStore } from "@/features/auth/store/auth.store";
 import { useEffect, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
 
 interface MessageListProps {
   messages: Message[];
   isTyping: boolean;
+  onRetry?: (message: Message) => void;
 }
 
-const MessageList = ({ messages, isTyping }: MessageListProps) => {
-  const { user } = useAuthStore();
+const MessageList = ({ messages, isTyping , onRetry }: MessageListProps) => {
   const endOfMessagesRef = useRef<HTMLDivElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [showScrollButton, setShowScrollButton] = useState(false);
@@ -68,6 +67,7 @@ const MessageList = ({ messages, isTyping }: MessageListProps) => {
             key={msg.id}
             message={msg}
             isUser={!msg.is_from_ai && msg.conversation_id === msg.conversation_id}
+            onRetry={onRetry}
           />
         ))
       )}
