@@ -2,7 +2,7 @@ import type { ConversationsResponse, Message } from "./conversation";
 
 export interface AuthTokens {
   token: string;
-  expiresAt: number; // timestamp en ms
+  expiresAt: number; 
 }
 
 export interface User {

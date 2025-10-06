@@ -7,7 +7,7 @@ interface AppProps {
 
 const App = ({ children }: AppProps) => {
   return (
-    <div className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen w-screen">
+    <div className="bg-white dark:bg-dark-purple text-gray-900 dark:text-gray-100 min-h-screen w-screen">
       {children}
       <ToastContainer />
     </div>
