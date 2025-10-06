@@ -221,7 +221,7 @@ const AuthForm = ({ mode, onSubmit, isLoading, error }: AuthFormProps) => {
             id="form-global-error"
             role="alert"
             aria-live="assertive"
-            className="text-red-600 text-sm mt-2"
+            className="text-red-300 text-sm mt-2"
           >
             {error}
           </div>
