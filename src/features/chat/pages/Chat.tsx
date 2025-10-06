@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { mockApi } from "@/lib/mockApi/mock_API";
 import { useAuthStore } from "@/features/auth/store/auth.store";
 import { useMessageStore } from "@/features/chat/store/messages.store";
 import MessageList from "../components/MessageList";
@@ -10,7 +9,7 @@ import { useSendMessage } from "../hooks/useSendMessage";
 const Chat = () => {
   const { conversationId } = useParams();
   const { tokens } = useAuthStore();
-  const { messagesByConversation, setMessages , error} = useMessageStore();
+  const { messagesByConversation } = useMessageStore();
   const [loading, setLoading] = useState(true);
   const convId = Number(conversationId);
 
@@ -28,39 +27,6 @@ const Chat = () => {
     if (!conversationId) navigate("/dashboard", { replace: true });
   }, [conversationId, navigate]);
 
-  // Cargar mensajes iniciales (solo si no hay cache) — con guardia anti-race
-  // useEffect(() => {
-  //   let isCancelled = false;
-  //   if (!conversationId || !tokens) return;
-
-  //   const fetchMessages = async () => {
-  //     setLoading(true);
-  //     try {
-  //       const res = await mockApi.getMessages(tokens.token, convId);
-  //       if (isCancelled) return;
-
-  //       // Guardia anti-race:
-  //       // Si YA hay mensajes locales (pudimos haber agregado el del usuario),
-  //       // NO sobrescribimos con lo que venga del API.
-  //       const latestLocal =
-  //         useMessageStore.getState().messagesByConversation[convId] || [];
-  //       if (latestLocal.length === 0) {
-  //         setMessages(convId, res.messages);
-  //       }
-  //     } catch (err) {
-  //       if (!isCancelled) console.error(err);
-  //     } finally {
-  //       if (!isCancelled) setLoading(false);
-  //     }
-  //   };
-
-  //   if (!messages.length) fetchMessages();
-  //   else setLoading(false);
-
-  //   return () => {
-  //     isCancelled = true;
-  //   };
-  // }, [conversationId, tokens]);
 
   useEffect(() => {
   if (!conversationId || !tokens) return;

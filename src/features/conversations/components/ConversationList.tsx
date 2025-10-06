@@ -3,6 +3,7 @@ import { useConversationStore } from "../store/conversation.store";
 import ConversationItem from "./ConversationItem";
 import { useAuthStore } from "@/features/auth/store/auth.store";
 import RetryFetchConversations from "./RetryFetchConversations";
+import { motion, AnimatePresence } from "framer-motion";
 
 const ConversationList = () => {
   const { tokens } = useAuthStore();
@@ -36,9 +37,21 @@ const ConversationList = () => {
 
   return (
     <div className="flex flex-col gap-2 mt-2 items-start overflow-y-auto pr-2">
-      {filteredConversations.map((conv) => (
-        <ConversationItem key={conv.id} conversation={conv} />
-      ))}
+      <AnimatePresence mode="popLayout">
+        {filteredConversations.map((conv) => (
+          <motion.div
+            key={conv.id}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            layout
+            className="w-full"
+          >
+            <ConversationItem key={conv.id} conversation={conv} />
+          </motion.div>
+        ))}
+      </AnimatePresence>
     </div>
   );
 };
