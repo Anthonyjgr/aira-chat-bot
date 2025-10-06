@@ -178,7 +178,7 @@ Then open **[http://localhost:5173](http://localhost:5173)** in your browser.
 ## 👨‍💻 Author
 
 **Anthony Guzmán R.**
-Full Stack Developer | Product-Oriented Engineer | CTO @ JDigital Group Solutions
+Full Stack Developer | Product-Oriented Engineer | 
 📧 [anthonyjgr28@gmail.com](mailto:anthonyjgr28@gmail.com)
 🔗 [LinkedIn](https://www.linkedin.com/in/anthony-guzman-840449135/)
 🔗 [GitHub](https://github.com/Anthonyjgr)

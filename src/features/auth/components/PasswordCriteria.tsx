@@ -6,7 +6,7 @@ interface PasswordCriteriaProps {
 }
 
 const PasswordCriteria = ({ password, confirmPassword }: PasswordCriteriaProps) => {
-  // Reglas individuales
+  // individuals rules
   const rules = [
     {
       label: "At least 6 characters",

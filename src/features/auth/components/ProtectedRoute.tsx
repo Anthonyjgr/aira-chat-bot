@@ -5,7 +5,6 @@ export default function ProtectedRoute() {
   const { user, isLoading } = useAuthStore();
 
   if (isLoading) {
-    // mientras carga la sesión inicial
     return <div className="flex items-center justify-center h-full bg-white dark:bg-dark-purple">Loading…</div>;
   }
 

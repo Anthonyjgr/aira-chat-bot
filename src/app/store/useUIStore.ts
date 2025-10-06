@@ -35,23 +35,3 @@ export const useUIStore = create<UIState>()(
   )
 );
 
-// import type { UIState } from "@/types/ui";
-// import { create } from "zustand";
-// import { persist } from "zustand/middleware";
-
-// export const useUIStore = create<UIState>()(
-//   persist(
-//     (set, get) => ({
-//       theme: "light",
-//       setTheme: (theme) => set({ theme }),
-//       toggleTheme: () => {
-//         const newTheme = get().theme === "light" ? "dark" : "light";
-//         set({ theme: newTheme });
-//         document.documentElement.classList.toggle("dark", newTheme === "dark");
-//       },
-//     }),
-//     {
-//       name: "user-ui-preferences",
-//     }
-//   )
-// );
