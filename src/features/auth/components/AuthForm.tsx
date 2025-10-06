@@ -85,7 +85,7 @@ const AuthForm = ({ mode, onSubmit, isLoading, error }: AuthFormProps) => {
         noValidate
       >
         <div
-          className="absolute scale-50 w-[800px] z-20 inset-0 left-50 top-40"
+          className="absolute scale-30 md:scale-50 w-[700px] md:w-[800px] z-20 inset-0 -left-20 -bottom-[1100px] md:left-50 md:top-40"
           pointer-events="none"
         >
           <Bot />
@@ -95,13 +95,13 @@ const AuthForm = ({ mode, onSubmit, isLoading, error }: AuthFormProps) => {
         </h1>
         {mode === "register" && (
           <div>
-            <label htmlFor="name" className="block text-sm font-medium">
+            <label htmlFor="name" className="block text-sm font-medium text-white">
               Full name
             </label>
             <input
               id="name"
               type="text"
-              className="mt-1 block w-full border rounded-full p-2 bg-white dark:bg-dark-purple/50"
+              className="mt-1 block w-full border rounded-full p-2 bg-white dark:bg-dark-purple/50 focus:outline-secundary"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
@@ -111,7 +111,7 @@ const AuthForm = ({ mode, onSubmit, isLoading, error }: AuthFormProps) => {
               aria-describedby={fieldErrors.name ? "name-error" : undefined}
             />
             {!isFirstAttempt && fieldErrors.name && (
-              <p id="name-error" className="text-red-500 text-sm mt-1">
+              <p id="name-error" className="text-red-300 text-sm mt-1">
                 {fieldErrors.name}
               </p>
             )}
@@ -125,7 +125,7 @@ const AuthForm = ({ mode, onSubmit, isLoading, error }: AuthFormProps) => {
           <input
             id="email"
             type="email"
-            className="mt-1 block w-full border rounded-full p-2 bg-white dark:bg-dark-purple/50"
+            className="mt-1 block w-full border rounded-full p-2 bg-white dark:bg-dark-purple/50 focus:outline-secundary"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -136,7 +136,7 @@ const AuthForm = ({ mode, onSubmit, isLoading, error }: AuthFormProps) => {
             placeholder="name@example.com"
           />
           {!isFirstAttempt && fieldErrors.email && (
-            <p id="email-error" className="text-red-500 text-sm mt-1">
+            <p id="email-error" className="text-red-300 text-sm mt-1">
               {fieldErrors.email}
             </p>
           )}
@@ -149,7 +149,7 @@ const AuthForm = ({ mode, onSubmit, isLoading, error }: AuthFormProps) => {
           <input
             id="password"
             type={showPassword ? "text" : "password"}
-            className="mt-1 block w-full border rounded-full p-2 pr-10 bg-white dark:bg-dark-purple/50 z-20"
+            className="mt-1 block w-full border rounded-full p-2 pr-10 bg-white dark:bg-dark-purple/50 z-20 focus:outline-secundary"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
@@ -179,7 +179,7 @@ const AuthForm = ({ mode, onSubmit, isLoading, error }: AuthFormProps) => {
             <input
               id="confirm-password"
               type={showPassword ? "text" : "password"}
-              className="mt-1 block w-full border rounded-full p-2 pr-10 bg-white dark:bg-dark-purple/50 z-20"
+              className="mt-1 block w-full border rounded-full p-2 pr-10 bg-white dark:bg-dark-purple/50 z-20 focus:outline-secundary"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
@@ -207,7 +207,7 @@ const AuthForm = ({ mode, onSubmit, isLoading, error }: AuthFormProps) => {
               )}
             </button>
             {!isFirstAttempt && fieldErrors.password && (
-              <p id="name-error" className="text-red-500 text-sm mt-1 z-20">
+              <p id="name-error" className="text-red-300 text-sm mt-1 z-20">
                 {fieldErrors.password}
               </p>
             )}

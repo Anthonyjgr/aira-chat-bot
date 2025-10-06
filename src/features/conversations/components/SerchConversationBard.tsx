@@ -16,7 +16,7 @@ const SearchConversationBar = () => {
         placeholder="Search conversation"
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)} // 🔹 actualiza el estado global
-        className="w-full pl-10 pr-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+        className="w-full pl-10 pr-4 py-2 text-sm border bg-white dark:bg-primary/20 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secundary focus:border-secundary transition"
         aria-label="Search conversation"
       />
     </div>

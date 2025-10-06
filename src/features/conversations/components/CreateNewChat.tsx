@@ -3,8 +3,10 @@ import { useConversationStore } from "@/features/conversations/store/conversatio
 import { useAuthStore } from "@/features/auth/store/auth.store";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useUIStore } from "@/app/store/useUIStore";
 
 const CreateNewChat = () => {
+  const { isDrawerOpen, closeDrawer } = useUIStore();
   const { tokens } = useAuthStore();
   const { createConversation } = useConversationStore();
   const navigate = useNavigate();
@@ -23,6 +25,9 @@ const CreateNewChat = () => {
       console.error("Error creating chat:", err);
     } finally {
       setIsCreating(false);
+      if (isDrawerOpen) {
+        closeDrawer();
+      }
     }
   };
 
@@ -30,7 +35,7 @@ const CreateNewChat = () => {
     <button
       onClick={handleCreateChat}
       disabled={isCreating}
-      className={`cursor-pointer p-2 rounded-full bg-blue-600 hover:bg-blue-700 transition flex items-center justify-center shadow-md h-10 w-10 ${
+      className={`cursor-pointer p-2 rounded-full bg-primary hover:bg-secundary transition flex items-center justify-center shadow-md h-10 w-10 ${
         isCreating ? "opacity-60 cursor-not-allowed" : ""
       }`}
       aria-label="Create new chat"

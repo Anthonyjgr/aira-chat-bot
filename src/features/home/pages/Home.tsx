@@ -5,22 +5,22 @@ import { Link } from "react-router-dom";
 const Home = () => {
   return (
     <div className="relative flex items-start justify-center w-screen h-screen dark:bg-dark-purple bg-white overflow-hidden">
-      <BloomRotating styles="absolute w-full scale-150 -top-[800px] z-3" speed="15s" />
+      <BloomRotating styles="absolute w-full scale-250 md:scale-150 md:-top-[500px] xl:-top-[800px] z-3" speed="15s" />
       <img
         src="/lines.png"
         alt="background rounded lines for decoration porpuses"
         className="absolute w-screen h-screen z-2 opacity-15 dark:opacity-30 object-cover"
       />
 
-      <div className="z-20 flex flex-col items-center justify-center mt-30">
-        <h1 className="text-dark-purple dark:text-white xl:text-7xl font-bold max-w-5xl text-center">
+      <div className="z-20 flex flex-col items-center justify-center mt-30 p-4">
+        <h1 className="text-dark-purple dark:text-white text-4xl md:text-5xl xl:text-7xl font-bold max-w-5xl text-center">
           Unlock the power of{" "}
           <span className="text-primary text-shadow-lg">
             Aira AI
           </span>{" "}
           The smartest ChatBot
         </h1>
-        <span className="mt-10 text-2xl dark:text-gray-300">
+        <span className="mt-10  md:text-2xl text-center dark:text-gray-300">
           Your personal AI, tailored for every conversation, anytime, anywhere.
         </span>
         <Link to="/login">
@@ -29,7 +29,7 @@ const Home = () => {
           </button>
         </Link>
       </div>
-      <div className="absolute scale-50 top-[200px] w-full z-2">
+      <div className="absolute scale-30 md:scale-50 top-[200px] w-[700px] md:w-full z-2">
         <Bot />
       </div>
     </div>

@@ -22,7 +22,7 @@ const Login = () => {
   }
 
   return (
-    <div className="flex h-screen items-center justify-center dark:bg-dark-purple shadow-lg">
+    <div className="flex h-screen md:items-center justify-center dark:bg-dark-purple shadow-lg overflow-hidden">
       <div className="max-w-xl w-full">
         <AuthForm
           mode="login"

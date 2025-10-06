@@ -1,16 +1,16 @@
+import type { UIState } from "@/types/ui";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-
-interface UIState {
-  theme: "light" | "dark";
-  toggleTheme: () => void;
-  setTheme: (theme: "light" | "dark") => void;
-}
 
 export const useUIStore = create<UIState>()(
   persist(
     (set, get) => ({
-      theme: "light",
+      theme: "dark",
+      isDrawerOpen: false,
+
+      toggleDrawer: () => set((s) => ({ isDrawerOpen: !s.isDrawerOpen })),
+      openDrawer: () => set({ isDrawerOpen: true }),
+      closeDrawer: () => set({ isDrawerOpen: false }),
 
       toggleTheme: () => {
         const newTheme = get().theme === "light" ? "dark" : "light";
@@ -34,8 +34,6 @@ export const useUIStore = create<UIState>()(
     }
   )
 );
-
-
 
 // import type { UIState } from "@/types/ui";
 // import { create } from "zustand";

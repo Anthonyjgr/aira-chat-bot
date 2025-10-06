@@ -21,14 +21,14 @@ const MessageInput = ({ onMessageSent, isTyping = false }: MessageInputProps) =>
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex items-center gap-2 border-t border-gray-200 h-[40px] "
+      className="flex items-center gap-2 border-t border-gray-400 dark:border-primary/60 h-[40px] "
     >
       <input
         type="text"
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         placeholder="Type a message..."
-        className="flex-1 border border-gray-300 rounded-full px-4 py-2 mt-6 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="flex-1 border border-gray-400 dark:border-primary/60 rounded-full px-4 py-2 mt-6 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
         disabled={isTyping}
       />
 
@@ -38,7 +38,7 @@ const MessageInput = ({ onMessageSent, isTyping = false }: MessageInputProps) =>
         className={`p-2 rounded-full transition duration-300 flex mt-6 items-center justify-center ${
           isTyping || !message.trim()
             ? "cursor-not-allowed"
-            : "bg-blue-600 hover:bg-blue-700 text-white"
+            : "bg-primary hover:bg-secundary text-white"
         }`}
         aria-label="Send message"
       >

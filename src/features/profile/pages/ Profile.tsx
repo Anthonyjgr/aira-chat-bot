@@ -27,13 +27,16 @@ const Profile = () => {
   };
 
   return (
-    <div className="p-4 rounded-xl  space-y-6 w-full ">
+    <div className="p-4 rounded-xl space-y-6 w-full ">
       <div className="w-full items-start">
-        <button onClick={() => navigate(-1)} className="cursor-pointer hover:scale-115 transition-transform duration-300">
-          <ArrowLeft size={32} color="white"/>
+        <button
+          onClick={() => navigate(-1)}
+          className="cursor-pointer hover:scale-115 transition-transform duration-300 hidden lg:flex"
+        >
+          <ArrowLeft size={32} className="text-primary" />
         </button>
       </div>
-      <div className="max-w-md mx-auto mt-10 p-6 rounded-xl shadow-md space-y-6 w-full bg-black">
+      <div className="max-w-md mx-auto mt-10 p-6 rounded-xl shadow-xl space-y-6 w-full bg-white dark:bg-primary/70">
         <h2 className="text-xl text-center font-semibold text-gray-800 dark:text-gray-100">
           User Profile
         </h2>
@@ -53,9 +56,9 @@ const Profile = () => {
               disabled={!isEditing}
               className={`w-full px-3 py-2 rounded-md border ${
                 isEditing
-                  ? "border-blue-400 focus:ring-2 focus:ring-blue-400"
-                  : "border-gray-300 dark:border-gray-600"
-              } bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-100`}
+                  ? "border-primary focus:ring-2 focus:ring-primary"
+                  : "border-gray-300 dark:border-secundary"
+              } bg-gray-50 dark:bg-dark-purple/50 text-gray-800 dark:text-gray-100`}
             />
           </div>
 
@@ -65,13 +68,13 @@ const Profile = () => {
               type="email"
               value={user?.email || ""}
               disabled
-              className="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300"
+              className="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-secundary bg-gray-100 dark:bg-dark-purple/50 text-gray-600 dark:text-gray-300"
             />
           </div>
         </div>
 
         {/* PREFERENCES */}
-        <div className="pt-4 border-t border-gray-200 dark:border-gray-600">
+        <div className="pt-4 border-t border-gray-200 dark:border-secundary">
           <p className="text-sm text-gray-500 dark:text-gray-300 mb-2">Preferences</p>
           <div className="flex items-center justify-between">
             <span className="text-gray-700 dark:text-gray-200">Theme Mode</span>
@@ -81,7 +84,7 @@ const Profile = () => {
         </div>
 
         {/* ACTION BUTTONS */}
-        <div className="flex justify-end gap-3 pt-4 border-t border-gray-200 dark:border-gray-600">
+        <div className="flex justify-end gap-3 pt-4 border-t border-gray-200 dark:border-secundary">
           {isEditing ? (
             <>
               <button
@@ -92,7 +95,7 @@ const Profile = () => {
               </button>
               <button
                 onClick={handleSave}
-                className="px-4 py-2 rounded-md bg-blue-500 hover:bg-blue-600 text-white"
+                className="px-4 py-2 rounded-md bg-primary hover:bg-blue-600 text-white"
               >
                 Save
               </button>
@@ -100,7 +103,7 @@ const Profile = () => {
           ) : (
             <button
               onClick={() => setIsEditing(true)}
-              className="px-4 py-2 rounded-md bg-blue-500 hover:bg-blue-600 text-white"
+              className="px-4 py-2 rounded-md bg-primary hover:bg-secundary text-white cursor-pointer"
             >
               Edit
             </button>

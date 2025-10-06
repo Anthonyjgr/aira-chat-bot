@@ -44,7 +44,7 @@ const MOCK_USERS = [
   },
 ];
 
-const MOCK_CONVERSATIONS:  MockConversationBase[] = [
+const MOCK_CONVERSATIONS: MockConversationBase[] = [
   {
     id: 1,
     title: "Getting Started with AI",
@@ -262,7 +262,7 @@ export const mockApi = {
       message_count: 0,
     };
 
-      // ✅ Guardamos también en el mock global
+    // we also save within local conversations
     MOCK_CONVERSATIONS.push(newConversation);
     return { conversation: newConversation };
   },
@@ -417,7 +417,7 @@ export const mockApi = {
     updates: UpdateConversationInput
   ): Promise<UpdateConversationResponse> {
     await delay(600);
-    console.log(updates)
+    console.log(updates);
     // Token Validation
     if (!token) {
       throw new Error("Unauthorized");
@@ -437,7 +437,7 @@ export const mockApi = {
       message_count: MOCK_MESSAGES[conversationId]?.length || 0,
     };
 
-    // Persist changes in local MOCK_CONVERSATIONS 
+    // Persist changes in local MOCK_CONVERSATIONS
     const index = MOCK_CONVERSATIONS.findIndex((c) => c.id === conversationId);
     MOCK_CONVERSATIONS[index] = updatedConversation;
 

@@ -88,7 +88,7 @@ const MessageList = ({ messages, isTyping }: MessageListProps) => {
       {showScrollButton && (
         <button
           onClick={scrollToBottom}
-          className="absolute bottom-32 right-10 border bg-blue-600 text-white p-2 rounded-full shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all"
+          className="absolute bottom-14 right-0 border bg-primary text-white p-2 rounded-full shadow-lg hover:bg-secundary transition-all"
           aria-label="Scroll to latest message"
         >
           <ChevronDown size={20} />

@@ -1,4 +1,3 @@
-import React from "react";
 import { RotateCcw } from "lucide-react";
 import type { Message } from "@/types/conversation";
 
@@ -12,25 +11,25 @@ const MessageItem = ({ message, isUser }: MessageItemProps) => {
 
   return (
     <div
-      className={`flex ${isUser ? "justify-end" : "justify-start"} mb-2`}
+      className={`flex ${isUser ? "justify-end " : "justify-start"} mb-2`}
       aria-live="polite"
     >
       <div
-        className={`rounded-lg px-4 py-2 max-w-[70%] ${
+        className={`rounded-lg px-4 py-2 max-w-[80%] xl:max-w-[70%] ${
           isError
-            ? "bg-red-100 text-red-700 border border-red-300"
+            ? "bg-white border border-red-500 dark:bg-gray-200 text-red-700"
             : isUser
-            ? "bg-blue-600 text-white"
-            : "bg-gray-200 text-gray-900"
+            ? "bg-primary text-white"
+            : "bg-violet-300 text-gray-900"
         }`}
       >
         <p>{message.content}</p>
 
         {isError && message.retryCallback && (
-          <div>
+          <div >
             <button
+              className="mt-2 flex items-center gap-1 text-sm text-red-700 hover:text-black cursor-pointer"
               onClick={message.retryCallback}
-              className="mt-2 flex items-center gap-1 text-sm text-red-700 hover:text-red-800"
             >
               <RotateCcw size={14} /> Retry
             </button>
