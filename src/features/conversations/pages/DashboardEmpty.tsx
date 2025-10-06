@@ -3,7 +3,7 @@ import CreateNewChat from "@/features/conversations/components/CreateNewChat";
 
 const DashboardEmpty = () => {
   return (
-    <div className="flex flex-col items-center justify-center h-full text-center px-4 relative bg-white dark:bg-dark-purple">
+    <div className="flex flex-col items-center justify-center h-full text-center px-4 relative bg-white dark:bg-dark-purple rounded-3xl">
       {/* Icono principal */}
       <div className="flex items-center justify-center w-16 h-16 rounded-full shadow-lg bg-gray-200 dark:bg-white text-primary mb-4">
         <MessageSquarePlus size={28} />

@@ -158,6 +158,10 @@ npm run dev
 
 Then open **[http://localhost:5173](http://localhost:5173)** in your browser.
 
+### **Demo Credentials:**
+- **Email:** `demo@example.com`
+- **Password:** Any password with 6+ characters
+
 ---
 
 ## 🌐 Deployment
