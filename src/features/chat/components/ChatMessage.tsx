@@ -10,7 +10,6 @@ interface ChatMessageProps {
 
 const ChatMessage = ({ message, isUser, onRetry }: ChatMessageProps) => {
   const [isError, setIsError] = useState<boolean>(false);
-  // console.log(message);
 
   useEffect(() => {
     setIsError(!!message.isError);

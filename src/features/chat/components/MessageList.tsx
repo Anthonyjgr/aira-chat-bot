@@ -24,7 +24,7 @@ const MessageList = ({
   const [showScrollButton, setShowScrollButton] = useState(false);
   const { error } = useMessageStore();
 
-  // Scroll al final cuando llegan nuevos mensajes
+  // Scroll to final messges when new message arrives
   useEffect(() => {
     if (endOfMessagesRef.current) {
       endOfMessagesRef.current.scrollIntoView({ behavior: "smooth" });
@@ -39,7 +39,7 @@ const MessageList = ({
     }
   }, [error]);
 
-  // Detectar si el usuario hace scroll hacia arriba
+  // Detecting user scroll iteraction
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
@@ -55,7 +55,7 @@ const MessageList = ({
     return () => container.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Scroll manual al fondo al presionar el botón
+  // Scroll to botton while pressing the button
   const scrollToBottom = () => {
     if (endOfMessagesRef.current) {
       endOfMessagesRef.current.scrollIntoView({ behavior: "smooth" });
@@ -102,10 +102,10 @@ const MessageList = ({
         </div>
       )}
 
-      {/* marcador invisible para el scroll */}
+      {/* Ref contaiter to tell the scroll metthod where to stop to*/}
       <div ref={endOfMessagesRef} />
 
-      {/* botón flotante para volver al último mensaje */}
+      {/* Botton to go to conversation's end*/}
       {showScrollButton && (
         <button
           onClick={scrollToBottom}

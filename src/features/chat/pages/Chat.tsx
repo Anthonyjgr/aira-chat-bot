@@ -49,7 +49,6 @@ const Chat = () => {
         <div className="flex items-center justify-center h-full">
           <p className="p-4 text-gray-400 text-center">Loading messages…</p>
         </div>
-        {/* <MessageInput onMessageSent={handleSendMessage} isTyping={isTyping} /> */}
         <MessageInput
           onMessageSent={(msg) => handleSendMessage(msg, messages)}
           isTyping={isTyping}
@@ -61,7 +60,6 @@ const Chat = () => {
   return (
     <div className="flex flex-col h-full w-full justify-between relative pt-4 md:pt-none">
       <MessageList messages={messages} isTyping={isTyping} onRetry={handleRetry} conversationId={Number(conversationId)}/>
-      {/* <MessageInput onMessageSent={handleSendMessage} isTyping={isTyping} /> */}
       <MessageInput
         onMessageSent={(msg) => handleSendMessage(msg, messages)}
         isTyping={isTyping}
