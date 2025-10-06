@@ -2,17 +2,27 @@ import MessageItem from "./MessageItem";
 import type { Message } from "@/types/conversation";
 import { useEffect, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
+import { useMessageStore } from "../store/messages.store";
+import { toast } from "react-toastify";
+import RetryFetchMessages from "./RetryFetchMessages";
 
 interface MessageListProps {
   messages: Message[];
   isTyping: boolean;
   onRetry?: (message: Message) => void;
+  conversationId: number;
 }
 
-const MessageList = ({ messages, isTyping , onRetry }: MessageListProps) => {
+const MessageList = ({
+  messages,
+  isTyping,
+  onRetry,
+  conversationId,
+}: MessageListProps) => {
   const endOfMessagesRef = useRef<HTMLDivElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [showScrollButton, setShowScrollButton] = useState(false);
+  const { error } = useMessageStore();
 
   // Scroll al final cuando llegan nuevos mensajes
   useEffect(() => {
@@ -20,6 +30,14 @@ const MessageList = ({ messages, isTyping , onRetry }: MessageListProps) => {
       endOfMessagesRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages, isTyping]);
+
+  useEffect(() => {
+    if (error === "Failed to fetch messages") {
+      toast.error("Failed to fetch messages", {
+        toastId: "Failed to fetch messages",
+      });
+    }
+  }, [error]);
 
   // Detectar si el usuario hace scroll hacia arriba
   useEffect(() => {
@@ -57,7 +75,10 @@ const MessageList = ({ messages, isTyping , onRetry }: MessageListProps) => {
       ref={containerRef}
       className="flex flex-col w-full p-4 overflow-y-auto h-[calc(100vh-120px)]"
     >
-      {messages.length === 0 ? (
+      {error === "Failed to fetch messages" && (
+        <RetryFetchMessages conversationId={conversationId} />
+      )}
+      {!error && messages.length === 0 ? (
         <p className="text-gray-400 text-center mt-10">
           Hello, I'm Aira your AI assintant. What can I help you with?
         </p>

@@ -3,11 +3,11 @@ import { useConversationStore } from "@/features/conversations/store/conversatio
 import { useMessageStore } from "@/features/chat/store/messages.store";
 import type { Message } from "@/types/conversation";
 
-export const useAIResponse = (convId: number, token: string) => {
+export const useAIResponse = (convId: number, _token: string) => {
   const { addMessage, setMessages } = useMessageStore();
   const { updateConversationInStore } = useConversationStore();
 
-  const requestAIResponse = async (lastUserMessage: string, title: string) => {
+  const requestAIResponse = async (lastUserMessage: string, _title: string) => {
     try {
       const { message: aiMsg } = await mockApi.simulateAIResponse(
         convId,

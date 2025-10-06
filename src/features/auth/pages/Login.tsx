@@ -15,7 +15,7 @@ const Login = () => {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center h-full w-full">
+      <div className="flex justify-center items-center h-full w-full bg-white dark:bg-dark-purple">
         <p className="text-gray-50 text-sm">Loading session…</p>
       </div>
     );

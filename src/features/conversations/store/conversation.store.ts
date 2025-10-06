@@ -13,11 +13,11 @@ export const useConversationStore = create<ConversationState>()(
       searchQuery: "", // 🔹 nuevo estado
 
       fetchConversations: async (token: string) => {
-        const current = get().conversations;
-        if (current.length > 0) {
-          console.log("✅ Skipping fetch, using persisted conversations");
-          return; // ya hay datos persistidos, no llamamos a la API
-        }
+        // const current = get().conversations;
+        // if (current.length > 0) {
+        //   console.log("✅ Skipping fetch, using persisted conversations");
+        //   return; 
+        // }
 
         set({ isLoading: true, error: null });
         try {

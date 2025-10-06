@@ -54,7 +54,7 @@ export const useAuthStore = create<AuthState>()(
 
       logout: () => {
         set({ user: null, tokens: null, error: null });
-        localStorage.removeItem("aira-conversations-storage"); // ✅ limpia las conversaciones persistidas
+        localStorage.removeItem("aira-conversations-storage"); 
       },
 
       loadSession: async () => {

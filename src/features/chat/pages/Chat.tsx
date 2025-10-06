@@ -10,7 +10,7 @@ import { useSendMessage } from "../hooks/useSendMessage";
 const Chat = () => {
   const { conversationId } = useParams();
   const { tokens } = useAuthStore();
-  const { messagesByConversation, setMessages } = useMessageStore();
+  const { messagesByConversation, setMessages , error} = useMessageStore();
   const [loading, setLoading] = useState(true);
   const convId = Number(conversationId);
 
@@ -29,38 +29,53 @@ const Chat = () => {
   }, [conversationId, navigate]);
 
   // Cargar mensajes iniciales (solo si no hay cache) — con guardia anti-race
+  // useEffect(() => {
+  //   let isCancelled = false;
+  //   if (!conversationId || !tokens) return;
+
+  //   const fetchMessages = async () => {
+  //     setLoading(true);
+  //     try {
+  //       const res = await mockApi.getMessages(tokens.token, convId);
+  //       if (isCancelled) return;
+
+  //       // Guardia anti-race:
+  //       // Si YA hay mensajes locales (pudimos haber agregado el del usuario),
+  //       // NO sobrescribimos con lo que venga del API.
+  //       const latestLocal =
+  //         useMessageStore.getState().messagesByConversation[convId] || [];
+  //       if (latestLocal.length === 0) {
+  //         setMessages(convId, res.messages);
+  //       }
+  //     } catch (err) {
+  //       if (!isCancelled) console.error(err);
+  //     } finally {
+  //       if (!isCancelled) setLoading(false);
+  //     }
+  //   };
+
+  //   if (!messages.length) fetchMessages();
+  //   else setLoading(false);
+
+  //   return () => {
+  //     isCancelled = true;
+  //   };
+  // }, [conversationId, tokens]);
+
   useEffect(() => {
-    let isCancelled = false;
-    if (!conversationId || !tokens) return;
+  if (!conversationId || !tokens) return;
 
-    const fetchMessages = async () => {
-      setLoading(true);
-      try {
-        const res = await mockApi.getMessages(tokens.token, convId);
-        if (isCancelled) return;
+  const loadMessages = async () => {
+    setLoading(true);
+    try {
+      await useMessageStore.getState().fetchMessages(tokens.token, convId);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-        // Guardia anti-race:
-        // Si YA hay mensajes locales (pudimos haber agregado el del usuario),
-        // NO sobrescribimos con lo que venga del API.
-        const latestLocal =
-          useMessageStore.getState().messagesByConversation[convId] || [];
-        if (latestLocal.length === 0) {
-          setMessages(convId, res.messages);
-        }
-      } catch (err) {
-        if (!isCancelled) console.error(err);
-      } finally {
-        if (!isCancelled) setLoading(false);
-      }
-    };
-
-    if (!messages.length) fetchMessages();
-    else setLoading(false);
-
-    return () => {
-      isCancelled = true;
-    };
-  }, [conversationId, tokens]);
+  loadMessages();
+}, [conversationId, tokens]);
 
   if (loading) {
     return (
@@ -79,7 +94,7 @@ const Chat = () => {
 
   return (
     <div className="flex flex-col h-full w-full justify-between relative pt-4 md:pt-none">
-      <MessageList messages={messages} isTyping={isTyping} onRetry={handleRetry} />
+      <MessageList messages={messages} isTyping={isTyping} onRetry={handleRetry} conversationId={Number(conversationId)}/>
       {/* <MessageInput onMessageSent={handleSendMessage} isTyping={isTyping} /> */}
       <MessageInput
         onMessageSent={(msg) => handleSendMessage(msg, messages)}

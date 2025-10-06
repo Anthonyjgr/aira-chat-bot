@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useConversationStore } from "../store/conversation.store";
 import ConversationItem from "./ConversationItem";
 import { useAuthStore } from "@/features/auth/store/auth.store";
@@ -14,7 +14,11 @@ const ConversationList = () => {
   }, [tokens?.token, fetchConversations]);
 
   if (isLoading) {
-    return <p className="text-sm text-gray-500">Loading conversations...</p>;
+    return (
+      <p className="text-sm text-gray-500 bg-white dark:bg-dark-purple">
+        Loading conversations...
+      </p>
+    );
   }
 
   if (error) {

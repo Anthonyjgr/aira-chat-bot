@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 
 import "../styles/theme_toggle.css";
 import { useUIStore } from "@/app/store/useUIStore";

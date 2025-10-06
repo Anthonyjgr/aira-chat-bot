@@ -6,7 +6,7 @@ export default function ProtectedRoute() {
 
   if (isLoading) {
     // mientras carga la sesión inicial
-    return <div className="flex items-center justify-center h-full">Loading…</div>;
+    return <div className="flex items-center justify-center h-full bg-white dark:bg-dark-purple">Loading…</div>;
   }
 
   if (!user) {
