@@ -181,11 +181,11 @@ Below are some screenshots showcasing key parts of **Aira** — from onboarding 
 
 | Landing Page | Sign Up | Sign In |
 |---------------|----------|---------|
-| ![Landing](./public/demo/aira-landing.png) | ![Signup](./public/demo/aira-signup.png) | ![Signin](./public/demo/aira-sigin.png) |
+| ![Landing](./public/aira-landing.png) | ![Signup](./public/aira-signup.png) | ![Signin](./public/aira-sigin.png) |
 
 | Chat View | Profile | Empty State |
 |------------|----------|-------------|
-| ![Chat](./public/demo/aira-chat.png) | ![Profile](./public/demo/aira-profile.png) | ![Empty](./public/demo/aira-emptystate.png) |
+| ![Chat](./public/aira-chat.png) | ![Profile](./public/aira-profile.png) | ![Empty](./public/aira-emptystate.png) |
 
 ---
 
