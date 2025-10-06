@@ -10,12 +10,13 @@ import Chat from "@/features/chat/pages/Chat";
 import Profile from "@/features/profile/pages/ Profile";
 import NotFound from "@/components/NotFound";
 import ProtectedRoute from "@/features/auth/components/ProtectedRoute";
+import Home from "@/features/home/pages/Home";
 
 export const router = createBrowserRouter([
   {
     element: <LandingLayout />,
     children: [
-      { path: "/", element: <Login /> },
+      { path: "/", element: <Home /> },
       { path: "/login", element: <Login /> },
       { path: "/register", element: <Register /> },
     ],

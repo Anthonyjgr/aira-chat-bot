@@ -77,6 +77,23 @@ export const useAuthStore = create<AuthState>()(
           set({ isLoading: false });
         }
       },
+
+      updateUserProfile: async (updates) => {
+        const tokens = get().tokens;
+        if (!tokens?.token) throw new Error("No active session");
+
+        set({ isLoading: true, error: null });
+        try {
+          const { user } = await mockApi.updateProfile(tokens.token, updates);
+          set({ user });
+        } catch (err: unknown) {
+          const message = err instanceof Error ? err.message : "Update failed";
+          set({ error: message });
+          throw err;
+        } finally {
+          set({ isLoading: false });
+        }
+      },
     }),
 
     //WE CREATE THE STORAGE KEY WHERE WE WILL SAVE OUR SESSION ESSENTIAL DATA TO PERSIST THE USER SESSION

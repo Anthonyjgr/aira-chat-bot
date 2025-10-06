@@ -30,7 +30,7 @@ const CreateNewChat = () => {
     <button
       onClick={handleCreateChat}
       disabled={isCreating}
-      className={`cursor-pointer p-2 rounded-full bg-blue-600 hover:bg-blue-700 transition flex items-center justify-center shadow-md ${
+      className={`cursor-pointer p-2 rounded-full bg-blue-600 hover:bg-blue-700 transition flex items-center justify-center shadow-md h-10 w-10 ${
         isCreating ? "opacity-60 cursor-not-allowed" : ""
       }`}
       aria-label="Create new chat"

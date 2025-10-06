@@ -49,4 +49,5 @@ export interface AuthState {
   register: (name: string, email: string, password: string) => Promise<void>;
   logout: () => void;
   loadSession: () => Promise<void>;
+  updateUserProfile: (updates: UpdateProfileInput) => Promise<void>;
 }

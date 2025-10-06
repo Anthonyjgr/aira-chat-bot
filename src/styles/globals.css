@@ -1,13 +1,10 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -24,16 +21,21 @@ body {
   min-height: 100vh;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+@theme {
+  --color-primary: #6e28ff;
+  --color-secundary: #aa51ea;
+  --color-dark-purple: #090510;
+}
+
+@keyframes spin-custom {
+  to {
+    transform: rotate(360deg);
   }
 }
 
-
 @keyframes thinkingPulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.4;
     /* transform: translateX(0); */
   }
@@ -41,6 +43,9 @@ body {
     opacity: 1;
     /* transform: translateX(-4px); */
   }
+}
+.animate-spin-custom {
+  animation: spin-custom var(--spin-duration, 2s) linear infinite;
 }
 
 .animate-thinking {

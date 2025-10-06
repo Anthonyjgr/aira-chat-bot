@@ -43,7 +43,7 @@ const PasswordCriteria = ({ password, confirmPassword }: PasswordCriteriaProps) 
           ) : (
             <Circle className="text-gray-400 h-4 w-4" aria-hidden="true" />
           )}
-          <span className={rule.test ? "text-green-600 font-medium" : "text-gray-500"}>
+          <span className={rule.test ? "text-white font-medium" : "text-gray-300"}>
             {rule.label}
           </span>
         </div>

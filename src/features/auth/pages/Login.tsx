@@ -22,12 +22,16 @@ const Login = () => {
   }
 
   return (
-    <AuthForm
-      mode="login"
-      onSubmit={({ email, password }) => login(email, password)}
-      isLoading={isLoading}
-      error={error}
-    />
+    <div className="flex h-screen items-center justify-center dark:bg-dark-purple shadow-lg">
+      <div className="max-w-xl w-full">
+        <AuthForm
+          mode="login"
+          onSubmit={({ email, password }) => login(email, password)}
+          isLoading={isLoading}
+          error={error}
+        />
+      </div>
+    </div>
   );
 };
 

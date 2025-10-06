@@ -13,10 +13,10 @@ const LogoutButton = () => {
     }
   };
   return (
-    <div>
+    <div className="pr-2">
       <button
         onClick={() => handleLogout()}
-        className="flex flew-row justify-between w-full p-4 bg-white rounded-lg text-black cursor-pointer"
+        className="flex flew-row justify-between w-full p-4 bg-white rounded-lg text-black cursor-pointer "
       >
         <span>Logout</span>
         <LogOut color="red" size={20} />

@@ -51,13 +51,13 @@ interface ConversationState {
   conversations: ConversationResponse[];
   isLoading: boolean;
   error: string | null;
+  searchQuery: string;
 
   fetchConversations: (token: string) => Promise<void>;
   createConversation: (
     token: string,
     title?: string
   ) => Promise<ConversationResponse | null>;
-  // updateConversationInStore: (updatedConv: ConversationResponse) => void;
   updateConversationInStore: (updatedConv: Partial<ConversationResponse>) => void;
-
+  setSearchQuery: (query: string) => void;
 }

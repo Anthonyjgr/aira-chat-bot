@@ -9,7 +9,8 @@ export const useConversationStore = create<ConversationState>()(
       conversations: [],
       isLoading: false,
       error: null,
-
+      searchQuery: "", // 🔹 nuevo estado
+      
       fetchConversations: async (token: string) => {
         const current = get().conversations;
         if (current.length > 0) {
@@ -29,6 +30,8 @@ export const useConversationStore = create<ConversationState>()(
           set({ isLoading: false });
         }
       },
+
+      setSearchQuery: (query: string) => set({ searchQuery: query }),
 
       createConversation: async (token, title = "New Conversation") => {
         try {

@@ -35,12 +35,16 @@ const Register = () => {
   };
 
   return (
-    <AuthForm
-      mode="register"
-      onSubmit={handleRegister}
-      isLoading={isLoading}
-      error={error}
-    />
+    <div className="flex h-screen items-center justify-center dark:bg-dark-purple shadow-lg">
+      <div className="max-w-xl w-full">
+        <AuthForm
+          mode="register"
+          onSubmit={handleRegister}
+          isLoading={isLoading}
+          error={error}
+        />
+      </div>
+    </div>
   );
 };
 export default Register;
