@@ -175,6 +175,23 @@ Then open **[http://localhost:5173](http://localhost:5173)** in your browser.
 
 ---
 
+## 🖼️ Demo – App Screenshots
+
+Below are some screenshots showcasing key parts of **Aira** — from onboarding to real-time chat and user profile.
+
+| Landing Page | Sign Up | Sign In |
+|---------------|----------|---------|
+| ![Landing](./public/demo/aira-landing.png) | ![Signup](./public/demo/aira-signup.png) | ![Signin](./public/demo/aira-sigin.png) |
+
+| Chat View | Profile | Empty State |
+|------------|----------|-------------|
+| ![Chat](./public/demo/aira-chat.png) | ![Profile](./public/demo/aira-profile.png) | ![Empty](./public/demo/aira-emptystate.png) |
+
+---
+
+> 💡 *All screens were designed and built as part of this challenge, focusing on responsive design and modern UX/UI principles.*
+
+
 ## 👨‍💻 Author
 
 **Anthony Guzmán R.**
