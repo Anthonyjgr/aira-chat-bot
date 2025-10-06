@@ -1,7 +1,3 @@
-Perfect — here’s your **fully formatted, GitHub-ready README.md**, upgraded for visual polish, branding impact, and senior-level presentation 👇
-
----
-
 <h1 align="center">🤖 Aira Chat Bot</h1>
 
 <p align="center">
