@@ -85,7 +85,7 @@ const AuthForm = ({ mode, onSubmit, isLoading, error }: AuthFormProps) => {
         noValidate
       >
         <div
-          className="absolute scale-30 md:scale-50 w-[700px] md:w-[800px] z-20 inset-0 -left-20 -bottom-[1100px] md:left-50 md:top-40"
+          className="absolute scale-30 md:scale-50 w-[700px] md:w-[800px] z-20 inset-0 -left-20 -bottom-[1100px] md:bottom-0 md:left-50 md:top-40"
           pointer-events="none"
         >
           <Bot />
